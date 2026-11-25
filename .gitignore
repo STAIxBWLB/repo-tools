@@ -1,0 +1,15 @@
+node_modules/
+.worktrees/
+# Hub: share config.json and sdlc.toml; keep state, local overrides and checkpoints out.
+# The first line re-includes the directory for a person whose global gitignore excludes .agenthub/ as a whole.
+!/.agenthub/
+/.agenthub/*
+!/.agenthub/config.json
+!/.agenthub/sdlc.toml
+# agent-hub shared config (managed by ahub init)
+!/.agenthub/
+/.agenthub/*
+!/.agenthub/config.json
+!/.agenthub/routing.toml
+!/.agenthub/sdlc.toml
+# end agent-hub shared config
