@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync, lstatSync, readlinkSyn
 import { join, resolve, dirname, relative } from "node:path";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
+import { parseConfig } from "../config/index.mjs";
 
 /** @typedef {{path?: string, state: string, verifiedAgainst?: string, commits?: number, dirty?: boolean}} DocumentEvidence */
 
@@ -82,35 +83,42 @@ export function checkDocs(root, { requireFresh = false, committed = false } = {}
       const head = git("rev-parse", "--verify", "HEAD");
       if (head.status !== 0 || !/^[0-9a-f]{40}$/.test(head.stdout.trim())) throw new Error("HEAD does not resolve");
       headId = head.stdout.trim();
-      const dirty = dirtiness(["docs", "README.md", "package.json"]);
+    }
+    const configPath = "repo-tools.json";
+    const config = parseConfig(evidenceExists(configPath) ? read(configPath) : undefined);
+    const dirtinessPaths = [...new Set([...config.committedDirtinessPaths, ...config.extraCommittedDirtinessPaths])];
+    if (committed && dirtinessPaths.length) {
+      const dirty = dirtiness(dirtinessPaths);
       if (dirty.status !== 0 || dirty.stdout) errors.push("documentation evidence files are dirty or unavailable");
     }
     const manifest = JSON.parse(read("docs/verified.json"));
     if (manifest.schemaVersion !== 1 || !manifest.documents || typeof manifest.documents !== "object" || Array.isArray(manifest.documents)) throw new Error("invalid docs/verified.json schema");
-    let noteNames;
-    if (committed) {
-      const notes = git("ls-tree", "-z", "--name-only", `${headId}:docs/agent-notes`);
-      if (notes.status !== 0) throw new Error("committed agent notes unavailable");
-      noteNames = notes.stdout.split("\0").filter(Boolean);
-    } else noteNames = readdirSync(join(root, "docs/agent-notes"));
-    // #1268: every user-facing page directly under docs/ and docs/addons/ needs a stamp too; an absent directory lists nothing.
-    // The smoke ledger and the retired GSD analysis are dated records with their own evidence, like specs and the changelog.
-    const records = new Set(["docs/smoke.md", "docs/gsd-collaboration-analysis.md", "docs/roadmap.md"]);
-    /** @param {string} dir */
-  const pages = (dir) => {
-      if (!committed) return existsSync(join(root, dir)) ? readdirSync(join(root, dir)) : [];
-      const listed = git("ls-tree", "-z", "--name-only", `${headId}:${dir}`);
+    /** @param {{path: string, required?: boolean}} directory */
+    const pages = ({ path, required }) => {
+      if (!committed) return required || existsSync(join(root, path)) ? readdirSync(join(root, path)) : [];
+      const listed = git("ls-tree", "-z", "--name-only", `${headId}:${path}`);
       if (listed.status === 0) return listed.stdout.split("\0").filter(Boolean);
-      if (git("cat-file", "-e", `${headId}:${dir}`).status === 0) throw new Error(`committed ${dir} unavailable`);
+      if (required && path === "docs/agent-notes") throw new Error("committed agent notes unavailable");
+      if (required || evidenceExists(path)) throw new Error(`committed ${path} unavailable`);
       return [];
     };
-    const userDocs = ["docs", "docs/addons"].flatMap((dir) => pages(dir).filter((name) => name.endsWith(".md")).map((name) => `${dir}/${name}`)).filter((path) => !records.has(path));
-    const required = [...new Set(["README.md", "docs/security.md", "docs/operations.md", "docs/quickstart.md", ...userDocs, ...noteNames.filter((name) => name.endsWith(".md")).map((name) => `docs/agent-notes/${name}`)])];
+    // Check required directories first to preserve the agent-hub diagnostic order.
+    const directories = [...config.stampDirectories].sort((a, b) => Number(!!b.required) - Number(!!a.required));
+    const records = new Set(config.stampExcludedDocuments);
+    const userDocs = directories.flatMap(directory => pages(directory)
+      .filter(name => name.endsWith(".md"))
+      .map(name => `${directory.path}/${name}`))
+      .filter(path => !records.has(path));
+    const required = [...new Set([...config.requiredDocuments, ...userDocs])];
     for (const path of required.sort()) if (!Object.hasOwn(manifest.documents, path)) errors.push(`missing manifest entry: ${path}`);
-    const pkg = JSON.parse(read("package.json"));
-    if (typeof pkg.version === "string" && /^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:[+][0-9A-Za-z.-]+)?$/.test(pkg.version)) packageVersion = pkg.version;
-    const version = read("README.md").match(/^Status: ([^,\s]+),/m)?.[1];
-    if (version !== pkg.version) errors.push(`README status version ${version ?? "missing"} differs from package.json ${pkg.version}`);
+    if (config.readmeStatusVersion || evidenceExists("package.json")) {
+      const pkg = JSON.parse(read("package.json"));
+      if (typeof pkg.version === "string" && /^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:[+][0-9A-Za-z.-]+)?$/.test(pkg.version)) packageVersion = pkg.version;
+      if (config.readmeStatusVersion) {
+        const version = read("README.md").match(/^Status: ([^,\s]+),/m)?.[1];
+        if (version !== pkg.version) errors.push(`README status version ${version ?? "missing"} differs from package.json ${pkg.version}`);
+      }
+    }
     const head = git("rev-parse", "--verify", "HEAD");
     if (head.status !== 0 || !/^[0-9a-f]{40}$/.test(head.stdout.trim())) throw new Error("HEAD does not resolve");
     if (committed && headId !== head.stdout.trim()) throw new Error("HEAD changed during documentation readback");
