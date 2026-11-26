@@ -1,0 +1,14 @@
+{
+  "name": "@staix/repo-tools",
+  "version": "0.1.0",
+  "description": "Shared checks for repository maintenance",
+  "type": "module",
+  "repository": { "type": "git", "url": "git+https://github.com/STAIxBWLB/repo-tools.git" },
+  "exports": "./src/index.mjs",
+  "files": ["src", "bin", "README.md", "LICENSE"],
+  "engines": { "bun": ">=1.4.4", "node": ">=22" },
+  "scripts": { "test": "bun test", "typecheck": "tsc --noEmit" },
+  "devDependencies": { "@types/bun": "1.4.4", "typescript": "5.9.3" },
+  "publishConfig": { "access": "public" },
+  "license": "MIT"
+}
