@@ -1,3 +1,5 @@
+import { equal } from "node:assert/strict";
+import { fixture } from "../fixtures/check-docs/repository.mjs";
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -48,6 +50,12 @@ function checkNodeInstall(): void {
     });
     execFileSync("node", ["--input-type=module", "-e", "await import('@staix/repo-tools')"], {
       cwd: directory, stdio: "inherit",
+    });
+    fixture(root => {
+      const output = execFileSync(join(directory, "node_modules", ".bin", "check-docs"), ["--committed", "--require-fresh", "--json"], {
+        cwd: root, encoding: "utf8",
+      });
+      equal(JSON.parse(output).fresh, true);
     });
   } finally {
     rmSync(directory, { recursive: true, force: true });

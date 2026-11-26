@@ -4,6 +4,7 @@
   "description": "Shared checks for repository maintenance",
   "type": "module",
   "repository": { "type": "git", "url": "git+https://github.com/STAIxBWLB/repo-tools.git" },
+  "bin": { "check-docs": "./bin/check-docs.mjs" },
   "exports": "./src/index.mjs",
   "files": ["src", "bin", "README.md", "LICENSE"],
   "engines": { "bun": ">=1.4.4", "node": ">=22" },

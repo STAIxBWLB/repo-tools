@@ -1,0 +1,41 @@
+[
+  {
+    "name": "fresh stamp",
+    "setup": "fresh",
+    "flags": ["--committed"],
+    "status": 0,
+    "fresh": true,
+    "state": "fresh"
+  },
+  {
+    "name": "covered source changed",
+    "setup": "stale",
+    "flags": ["--require-fresh"],
+    "status": 1,
+    "fresh": false,
+    "state": "stale"
+  },
+  {
+    "name": "uncommitted documentation evidence",
+    "setup": "dirty",
+    "flags": ["--committed"],
+    "status": 1,
+    "fresh": false,
+    "state": "fresh"
+  },
+  {
+    "name": "nonancestor stamp",
+    "setup": "nonancestor",
+    "flags": [],
+    "status": 1,
+    "fresh": false,
+    "state": "nonancestor"
+  },
+  {
+    "name": "invalid schema",
+    "setup": "invalid",
+    "flags": [],
+    "status": 1,
+    "fresh": false
+  }
+]
