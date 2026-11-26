@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "documents": {
+    "README.md": {
+      "paths": [
+        "src",
+        "bin",
+        "package.json",
+        "repo-tools.json",
+        ".github/workflows",
+        "fixtures/check-docs/copies"
+      ],
+      "verifiedAgainst": "c1f86246a69e3ac08999a1163d1b2433b4fe2da1"
+    },
+    "CHANGELOG.md": {
+      "paths": [
+        "package.json"
+      ],
+      "verifiedAgainst": "417f105a5f813782dfc08f1f12ac8154a4135fc1"
+    }
+  }
+}

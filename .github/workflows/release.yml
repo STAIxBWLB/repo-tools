@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions: {}
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - run: node scripts/verify-release-tag.ts
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun test
+      - run: node bin/check-docs.mjs --committed --require-fresh
+      - run: node scripts/check-pack.ts --node-install
+      - name: Pack the verified release
+        run: |
+          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP"
+          mv "$RUNNER_TEMP/staix-repo-tools-${GITHUB_REF_NAME#v}.tgz" "$RUNNER_TEMP/repo-tools.tgz"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/repo-tools.tgz
+          if-no-files-found: error
+
+  publish:
+    needs: gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/npm-package
+      - run: npm publish --ignore-scripts --access public --registry https://registry.npmjs.org "$RUNNER_TEMP/npm-package/repo-tools.tgz"

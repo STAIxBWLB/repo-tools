@@ -1,0 +1,4 @@
+{
+  "requiredDocuments": ["README.md", "CHANGELOG.md"],
+  "stampDirectories": []
+}
