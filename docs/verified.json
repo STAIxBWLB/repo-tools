@@ -10,7 +10,7 @@
         ".github/workflows",
         "fixtures/check-docs/copies"
       ],
-      "verifiedAgainst": "417f105a5f813782dfc08f1f12ac8154a4135fc1"
+      "verifiedAgainst": "c1f86246a69e3ac08999a1163d1b2433b4fe2da1"
     },
     "CHANGELOG.md": {
       "paths": [
