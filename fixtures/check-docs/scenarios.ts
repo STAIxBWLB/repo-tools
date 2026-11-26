@@ -1,4 +1,4 @@
-import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, mkdirSync, readFileSync, rmdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 export function alter(root: string, modify: (manifest: any) => void) {
@@ -49,12 +49,15 @@ export function applyScenario(setup: string, root: string, stamp: string, git: (
       git("add", "README.md");
       git("commit", "-qm", "Remove status line");
       break;
-    default:
-      throw new Error(`Unknown fixture setup: ${setup}`);
+    default: {
+      const example = copyOnlyCases.find(example => example.setup === setup);
+      if (!example) throw new Error(`Unknown fixture setup: ${setup}`);
+      example.apply(root, git);
+    }
   }
 }
 
-// Give each copy a valid baseline before applying a single-case change.
+// These are the pinned copies' required sets, minus the README shared by all.
 const copyRequiredDocuments = [
   "docs/contracts.md", "docs/purge.md", "docs/curated-shard-migration.md",
   "docs/jcode.md", "docs/opencode.md", "docs/gemini-cli.md", "docs/qwen-code.md",
@@ -62,6 +65,35 @@ const copyRequiredDocuments = [
   "docs/development.md", "docs/recall.md",
   "docs/cutover-checklist.md", "docs/release-readiness.md", "docs/release-workflow.md",
   "src/playbook.ts", "CHANGELOG.md",
+];
+
+type CopyOnlyCase = {
+  setup: string;
+  apply: (root: string, git: (...args: string[]) => string) => void;
+};
+
+export const copyOnlyCases: CopyOnlyCase[] = [
+  ...copyRequiredDocuments.map(path => ({
+    setup: `missing-copy-document:${path}`,
+    apply(root: string, git: (...args: string[]) => string) {
+      git("rm", path);
+      alter(root, manifest => { delete manifest.documents[path]; });
+      git("add", "docs/verified.json");
+      git("commit", "-qm", "Remove a document required by a copy");
+    },
+  })),
+  {
+    setup: "missing-reference-directory",
+    apply(root) { rmdirSync(join(root, "docs/reference")); },
+  },
+  {
+    setup: "unstamped-reference-page",
+    apply(root, git) {
+      writeFileSync(join(root, "docs/reference/new.md"), "Reference fixture\n");
+      git("add", "docs/reference/new.md");
+      git("commit", "-qm", "Add unstamped reference page");
+    },
+  },
 ];
 
 export function seedCopyRequirements(root: string, stamp: string, git: (...args: string[]) => string): void {

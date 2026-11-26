@@ -1,0 +1,8 @@
+{
+  "requiredDocuments": [
+    "README.md",
+    "src/playbook.ts"
+  ],
+  "stampDirectories": [],
+  "readmeStatusVersion": false
+}

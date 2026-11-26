@@ -1,0 +1,15 @@
+{
+  "requiredDocuments": [
+    "README.md",
+    "docs/cutover-checklist.md",
+    "docs/release-readiness.md",
+    "docs/release-workflow.md"
+  ],
+  "stampDirectories": [
+    {
+      "path": "docs/reference",
+      "required": true
+    }
+  ],
+  "readmeStatusVersion": false
+}

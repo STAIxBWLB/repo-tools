@@ -6,7 +6,7 @@ import { dirname, join, resolve } from "node:path";
 import { copies, flagKey, flagSets, readVerdict, type Recording } from "../fixtures/check-docs/copy-matrix.ts";
 import cases from "../fixtures/check-docs/cases.json";
 import { fixture } from "../fixtures/check-docs/repository.mjs";
-import { applyScenario, seedCopyRequirements } from "../fixtures/check-docs/scenarios.ts";
+import { applyScenario, copyOnlyCases, seedCopyRequirements } from "../fixtures/check-docs/scenarios.ts";
 
 const sourceRoot = process.argv[2];
 if (!sourceRoot) throw new Error("Pass the directory containing the five sibling repository checkouts.");
@@ -35,7 +35,7 @@ try {
     }
     const entry = join(snapshot, copy.source);
     const casesByFlag: Recording["cases"] = {};
-    for (const example of cases) {
+    for (const example of [...cases, ...copyOnlyCases]) {
       fixture((root, stamp, fixtureGit) => {
         seedCopyRequirements(root, stamp, fixtureGit);
         applyScenario(example.setup, root, stamp, fixtureGit);

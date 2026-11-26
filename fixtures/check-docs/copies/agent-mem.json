@@ -1,5 +1,5 @@
 {
-  "commit": "fb28b7bcd944bf4cede9368d851ec48f2c8d62a8",
+  "commit": "9f89caf3c435c731313f60c2f1a13d596f2a9829",
   "source": "scripts/check-docs.ts",
   "supportedFlags": [
     "--require-fresh"
@@ -86,6 +86,206 @@
       }
     },
     "missing-version": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-copy-document:docs/contracts.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/purge.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/curated-shard-migration.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/jcode.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/opencode.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/gemini-cli.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/qwen-code.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/antigravity.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/setup.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/cli.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/sync.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/development.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/recall.md": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-copy-document:docs/cutover-checklist.md": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-copy-document:docs/release-readiness.md": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-copy-document:docs/release-workflow.md": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-copy-document:src/playbook.ts": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-copy-document:CHANGELOG.md": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-reference-directory": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "unstamped-reference-page": {
       "default": {
         "status": 0,
         "fresh": true

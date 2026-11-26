@@ -1,0 +1,8 @@
+{
+  "requiredDocuments": [
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "stampDirectories": [],
+  "readmeStatusVersion": false
+}

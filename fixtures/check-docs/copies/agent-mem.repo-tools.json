@@ -1,0 +1,20 @@
+{
+  "requiredDocuments": [
+    "README.md",
+    "docs/contracts.md",
+    "docs/purge.md",
+    "docs/curated-shard-migration.md",
+    "docs/jcode.md",
+    "docs/opencode.md",
+    "docs/gemini-cli.md",
+    "docs/qwen-code.md",
+    "docs/antigravity.md",
+    "docs/setup.md",
+    "docs/cli.md",
+    "docs/sync.md",
+    "docs/development.md",
+    "docs/recall.md"
+  ],
+  "stampDirectories": [],
+  "readmeStatusVersion": false
+}
