@@ -5,17 +5,13 @@ import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 import { fixture } from "../fixtures/check-docs/repository.mjs";
+import { alter, applyScenario } from "../fixtures/check-docs/scenarios.ts";
 import cases from "../fixtures/check-docs/cases.json";
 import { checkDocs } from "../src/index.mjs";
 
 const checker = resolve(import.meta.dir, "../bin/check-docs.mjs");
 
 const check = (root: string) => spawnSync("node", [checker, root], { encoding: "utf8" });
-function alter(root: string, modify: (manifest: any) => void) {
-  const path = join(root, "docs/verified.json");
-  const manifest = JSON.parse(readFileSync(path, "utf8"));
-  modify(manifest); writeFileSync(path, JSON.stringify(manifest));
-}
 
 describe("documentation source verification gate", () => {
   test("release requires fresh stamps and preserves release-branch ancestry", () => fixture((root, _stamp, git) => {
@@ -205,28 +201,7 @@ test("committed coverage preserves tracked wildcards and ignores local note-name
 
 for (const example of cases) {
   test(`fixture: ${example.name}`, () => fixture((root, stamp, git) => {
-    switch (example.setup) {
-      case "fresh":
-        break;
-      case "stale":
-        writeFileSync(join(root, "src/covered.ts"), "changed\n");
-        git("add", "src/covered.ts");
-        git("commit", "-qm", "Change covered source");
-        break;
-      case "dirty":
-        writeFileSync(join(root, "README.md"), "uncommitted\n");
-        break;
-      case "nonancestor": {
-        const sibling = git("commit-tree", `${stamp}^{tree}`, "-m", "Detached review");
-        alter(root, manifest => { manifest.documents["README.md"].verifiedAgainst = sibling; });
-        break;
-      }
-      case "invalid":
-        alter(root, manifest => { manifest.schemaVersion = 2; });
-        break;
-      default:
-        throw new Error(`Unknown fixture setup: ${example.setup}`);
-    }
+    applyScenario(example.setup, root, stamp, git);
     const flags: readonly string[] = example.flags;
     const result = spawnSync("node", [checker, "--json", ...flags], { cwd: root, encoding: "utf8" });
     expect(result.status).toBe(example.status);

@@ -1,0 +1,172 @@
+{
+  "commit": "b6d372c39c7961bbe676ed8b72c474542ef46eb5",
+  "source": "scripts/check-docs.mjs",
+  "supportedFlags": [
+    "--require-fresh",
+    "--json"
+  ],
+  "cases": {
+    "fresh": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "stale": {
+      "default": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "dirty": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "nonancestor": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "invalid": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-required": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "unstamped-page": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-notes": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-version": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      }
+    }
+  }
+}

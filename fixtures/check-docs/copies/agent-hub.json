@@ -1,0 +1,317 @@
+{
+  "commit": "697cd2a1e089055e3396692f70f2cf691fe90fc9",
+  "source": "scripts/check-docs.mjs",
+  "supportedFlags": [
+    "--require-fresh",
+    "--json",
+    "--committed"
+  ],
+  "cases": {
+    "fresh": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--committed": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --committed": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json --committed": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json --committed": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "stale": {
+      "default": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "dirty": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      },
+      "--json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh --json": {
+        "status": 0,
+        "fresh": true
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "nonancestor": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "invalid": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-required": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "unstamped-page": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-notes": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-version": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json": {
+        "status": 1,
+        "fresh": false
+      },
+      "--committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--json --committed": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh --json --committed": {
+        "status": 1,
+        "fresh": false
+      }
+    }
+  }
+}

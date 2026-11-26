@@ -1,0 +1,99 @@
+{
+  "commit": "195d833f65ba0572d575e3791add07e9737aa674",
+  "source": "scripts/check-docs.mjs",
+  "supportedFlags": [
+    "--require-fresh"
+  ],
+  "cases": {
+    "fresh": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "stale": {
+      "default": {
+        "status": 0,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "dirty": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "nonancestor": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "invalid": {
+      "default": {
+        "status": 1,
+        "fresh": false
+      },
+      "--require-fresh": {
+        "status": 1,
+        "fresh": false
+      }
+    },
+    "missing-required": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "unstamped-page": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-notes": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    },
+    "missing-version": {
+      "default": {
+        "status": 0,
+        "fresh": true
+      },
+      "--require-fresh": {
+        "status": 0,
+        "fresh": true
+      }
+    }
+  }
+}
