@@ -1,7 +1,8 @@
 # repo-tools
 
 - Implement the accepted spec (#1, stage 3 of STAIxBWLB/agent-hub#1495) on a branch with a draft PR. Change the spec first when the code must differ.
-- A devDependency-only package with zero runtime dependencies; it runs on Bun and on Node 22. Strict TypeScript, `.ts` imports, `noUncheckedIndexedAccess`.
+- A devDependency-only package with zero runtime dependencies; it runs on Bun and on Node 22.
+- Shipped code (`src/`, `bin/`) is plain ESM `.mjs` with JSDoc types, checked by strict `tsc --checkJs` with `noUncheckedIndexedAccess`; tests and scripts may be `.ts`. Node 22 refuses type stripping under `node_modules`, so an installed `.ts` bin fails.
 - agent-hub's current behaviour is the reference for every tool: port its tests with the tool and name the agent-hub commit in the PR.
 - Git runs with `--no-pager --no-ext-diff --no-textconv` and never a repository-controlled program. Workflows use read-only permissions; no job that runs repository code holds `id-token: write`.
 - Tests never touch the network: GitHub responses are fixtures.
