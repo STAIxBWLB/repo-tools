@@ -1,4 +1,5 @@
 import { equal } from "node:assert/strict";
+import { ghFixture } from "../fixtures/closing-refs/gh.mjs";
 import { fixture } from "../fixtures/check-docs/repository.mjs";
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
@@ -57,6 +58,12 @@ function checkNodeInstall(): void {
       });
       equal(JSON.parse(output).fresh, true);
     });
+    const closing = execFileSync(join(directory, "node_modules", ".bin", "check-closing-refs"), {
+      cwd: directory,
+      encoding: "utf8",
+      env: ghFixture(directory, "STAIxBWLB/repo-tools", { title: "Refs #1.", closingIssuesReferences: [] }),
+    });
+    equal(closing.trim(), "closing-refs: OK (0 closing reference(s) match the text)");
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

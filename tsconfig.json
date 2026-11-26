@@ -11,5 +11,5 @@
     "checkJs": true,
     "types": ["bun"]
   },
-  "include": ["src", "bin", "test", "scripts", "fixtures/check-docs"]
+  "include": ["src", "bin", "test", "scripts", "fixtures"]
 }
