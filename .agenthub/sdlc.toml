@@ -1,1 +1,2 @@
 mode = "advise"
+required_checks = ["check", "node-22", "closing-refs"]
