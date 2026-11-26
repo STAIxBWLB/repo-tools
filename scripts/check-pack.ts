@@ -16,26 +16,26 @@ function checkPack(): void {
   for (const field of ["dependencies", "optionalDependencies", "peerDependencies", "bundleDependencies", "bundledDependencies"]) {
     const value = manifest[field];
     if (value === true || Object.keys(value ?? {}).length > 0) {
-      throw new Error(`package.json must not declare ${field}`);
+      throw new Error(`package.json must not declare ${field}; remove that field or move development-only entries to devDependencies`);
     }
   }
   for (const script of lifecycleScripts) {
     if (Object.hasOwn(manifest.scripts ?? {}, script)) {
-      throw new Error(`package.json must not declare the ${script} lifecycle script`);
+      throw new Error(`package.json must not declare the ${script} lifecycle script; remove it or give the command a non-lifecycle name`);
     }
   }
 
   const [pack] = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], {
     encoding: "utf8",
   })) as { files: { path: string }[] }[];
-  if (!pack) throw new Error("npm pack did not report any package");
+  if (!pack) throw new Error("npm pack did not report a package; run npm pack --dry-run --json from the package root and check package.json");
   for (const { path } of pack.files) {
     if (
       ["package.json", "README.md", "LICENSE"].includes(path) ||
       path.startsWith("src/") ||
       path.startsWith("bin/")
     ) continue;
-    throw new Error(`unexpected package file: ${path}`);
+    throw new Error(`unexpected package file: ${path}; remove it from the package files list or use an allowed directory`);
   }
 }
 
@@ -45,7 +45,7 @@ function checkNodeInstall(): void {
     const [pack] = JSON.parse(execFileSync("npm", ["pack", "--json", "--ignore-scripts", "--pack-destination", directory], {
       encoding: "utf8",
     })) as { filename: string }[];
-    if (!pack) throw new Error("npm pack did not create a tarball");
+    if (!pack) throw new Error("npm pack did not create a tarball; run npm pack --json from the package root and check package.json");
     execFileSync("npm", ["install", "--offline", "--ignore-scripts", "--no-audit", "--no-fund", join(directory, pack.filename)], {
       cwd: directory, stdio: "inherit",
     });
