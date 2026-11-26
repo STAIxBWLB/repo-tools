@@ -20,6 +20,7 @@ jobs:
       - run: bun run typecheck
       - run: bun test
       - run: bun scripts/check-pack.ts
+      - run: node bin/check-docs.mjs --require-fresh
   node-22:
     runs-on: ubuntu-latest
     timeout-minutes: 5
